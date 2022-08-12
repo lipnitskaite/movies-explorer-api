@@ -14,7 +14,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    // Нужно задать поведение по умолчанию, чтобы база данных не возвращала это поле ???
   },
   name: {
     type: String,
@@ -24,4 +23,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('user', userSchema);
+exports.User = mongoose.model('user', userSchema);

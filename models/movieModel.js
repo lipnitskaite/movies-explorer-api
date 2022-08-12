@@ -45,7 +45,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     use: {
       urlValidation,
-      message: () => 'Invalid image link',
+      message: () => 'Invalid link',
     },
   },
   owner: {
