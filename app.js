@@ -2,11 +2,13 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
+const { errors } = require('celebrate');
 const bodyParser = require('body-parser');
 
 const { PORT = 3000 } = process.env;
 
 const { routes } = require('./routes/routes');
+const { errorHandler } = require('./middlewares/errorHandler');
 
 const app = express();
 
@@ -22,5 +24,8 @@ async function main() {
     console.log(`App is listening on ${PORT}`);
   });
 }
+
+app.use(errors());
+app.use(errorHandler);
 
 main();
