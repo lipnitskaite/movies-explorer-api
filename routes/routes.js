@@ -1,7 +1,3 @@
-// # создаёт пользователя с переданными в теле
-// # email, password и name
-// POST /signup
-
 // # проверяет переданные в теле почту и пароль
 // # и возвращает JWT
 // POST /signin
@@ -15,6 +11,10 @@ const { createUserValidation } = require('../middlewares/validation');
 
 const { createUser } = require('../controllers/userController');
 
+const { usersRoutes } = require('./usersRoutes');
+
 routes.post('/signup', createUserValidation, createUser);
+
+routes.use('/users', usersRoutes);
 
 exports.routes = routes;
