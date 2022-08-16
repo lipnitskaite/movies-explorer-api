@@ -12,9 +12,11 @@ const { createUserValidation } = require('../middlewares/validation');
 const { createUser } = require('../controllers/userController');
 
 const { usersRoutes } = require('./usersRoutes');
+const { moviesRoutes } = require('./moviesRoutes');
 
 routes.post('/signup', createUserValidation, createUser);
 
 routes.use('/users', usersRoutes);
+routes.use('/movies', moviesRoutes);
 
 exports.routes = routes;

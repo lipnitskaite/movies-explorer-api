@@ -48,14 +48,14 @@ const movieSchema = new mongoose.Schema({
       message: () => 'Invalid link',
     },
   },
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: 'user',
-  },
+  // owner: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   required: true,
+  //   ref: 'user',
+  // },
   // movieId — id фильма, который содержится в ответе сервиса MoviesExplorer. Обязательное поле.
   movieId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     required: true,
   },
   nameRU: {
@@ -68,4 +68,4 @@ const movieSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('user', movieSchema);
+exports.Movie = mongoose.model('movie', movieSchema);
