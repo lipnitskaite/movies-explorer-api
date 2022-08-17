@@ -17,7 +17,7 @@ exports.createUserValidation = celebrate({
   }),
 });
 
-exports.loginUserValidation = celebrate({
+exports.signInUserValidation = celebrate({
   body: Joi.object().keys({
     email: Joi.string()
       .required()

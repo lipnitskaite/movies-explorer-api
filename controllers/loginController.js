@@ -6,7 +6,7 @@ const { generateToken } = require('../helpers/jwt');
 
 const UnauthorizedError = require('../errors/UnauthorizedError');
 
-exports.loginUser = async (req, res, next) => {
+exports.signInUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -32,6 +32,19 @@ exports.loginUser = async (req, res, next) => {
       })
       .send({ message: 'Successfully logged in.' })
       .end();
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.signOutUser = async (req, res, next) => {
+  try {
+    res.clearCookie('jwt', {
+      maxAge: 360000 * 24 * 7,
+      httpOnly: true,
+      sameSite: 'none',
+    })
+      .send({ message: 'The user has logged out' });
   } catch (err) {
     next(err);
   }
