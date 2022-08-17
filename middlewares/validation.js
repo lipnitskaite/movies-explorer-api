@@ -17,6 +17,18 @@ exports.createUserValidation = celebrate({
   }),
 });
 
+exports.loginUserValidation = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string()
+      .required()
+      .email({
+        minDomainSegments: 2,
+      }),
+    password: Joi.string()
+      .required(),
+  }),
+});
+
 exports.updateUserValidation = celebrate({
   body: Joi.object().keys({
     email: Joi.string()
