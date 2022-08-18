@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 
 const { checkCors } = require('./middlewares/cors');
 
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+
 const { PORT = 3000 } = process.env;
 
 const { routes } = require('./routes/routes');
@@ -22,6 +24,8 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(requestLogger);
+
 app.use(routes);
 
 async function main() {
@@ -33,6 +37,7 @@ async function main() {
   });
 }
 
+app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);
 
