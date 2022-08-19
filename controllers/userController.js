@@ -5,7 +5,7 @@ const { User } = require('../models/userModel');
 const DublicateError = require('../errors/DublicateError');
 const NotFoundError = require('../errors/NotFoundError');
 
-const MONGO_DUPLICATE_ERROR_CODE = require('../helpers/constants');
+const { MONGO_DUPLICATE_ERROR_CODE } = require('../helpers/constants');
 
 const SALT_ROUNDS = 10;
 
