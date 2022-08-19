@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-const UnauthorizedError = require('../errors/UnauthorizedError');
+const { SECRET_KEY } = require('./constants');
 
-const SECRET_KEY = 'very_secret';
+const UnauthorizedError = require('../errors/UnauthorizedError');
 
 const generateToken = (payload) => jwt.sign(
   payload,

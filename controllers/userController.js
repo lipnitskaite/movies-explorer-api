@@ -31,20 +31,9 @@ exports.createUser = async (req, res, next) => {
     });
   } catch (err) {
     if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
-      // eslint-disable-next-line no-ex-assign
       err = new DublicateError('This email address is already being used');
     }
 
-    next(err);
-  }
-};
-
-exports.getUsers = async (req, res, next) => {
-  try {
-    const users = await User.find({});
-
-    res.send(users);
-  } catch (err) {
     next(err);
   }
 };
@@ -56,7 +45,6 @@ exports.getCurrentUser = async (req, res, next) => {
     res.send({
       email: currentUser.email,
       name: currentUser.name,
-      id: currentUser._id,
     });
   } catch (err) {
     next(err);
@@ -80,7 +68,10 @@ exports.updateCurrentUser = async (req, res, next) => {
       throw new NotFoundError("Sorry, we can't find the user you're looking for.");
     }
 
-    res.send(updatedUser);
+    res.send({
+      email: updatedUser.email,
+      name: updatedUser.name,
+    });
   } catch (err) {
     next(err);
   }

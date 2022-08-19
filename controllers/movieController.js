@@ -52,7 +52,6 @@ exports.createMovie = async (req, res, next) => {
     });
   } catch (err) {
     if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
-      // eslint-disable-next-line no-ex-assign
       err = new DublicateError('This movie has been already created');
     }
 

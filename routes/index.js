@@ -25,7 +25,6 @@ routes.use('/movies', moviesRoutes);
 routes.all('*', (req, res, next) => {
   throw new NotFoundError("Sorry, we can't find the page you're looking for.");
 
-  // eslint-disable-next-line no-undef, no-unreachable
   next(err);
 });
 
