@@ -2,6 +2,7 @@ const { Movie } = require('../models/movieModel');
 
 const DublicateError = require('../errors/DublicateError');
 const NotFoundError = require('../errors/NotFoundError');
+const ForbiddenError = require('../errors/ForbiddenError');
 
 const MONGO_DUPLICATE_ERROR_CODE = require('../helpers/constants');
 
@@ -30,7 +31,7 @@ exports.createMovie = async (req, res, next) => {
       image,
       trailerLink,
       thumbnail,
-      // owner: req.user._id,
+      owner: req.user._id,
       movieId,
       nameRU,
       nameEN,
@@ -85,9 +86,14 @@ exports.getMovies = async (req, res, next) => {
 
 exports.deleteMovieByID = async (req, res, next) => {
   try {
-    await Movie.findByIdAndDelete(req.params.id);
+    const movie = await Movie.findById(req.params.id);
+    if (req.user._id === movie.owner.toString()) {
+      await Movie.findByIdAndDelete(req.params.id);
 
-    res.send({ message: 'The movie is removed' });
+      res.send({ message: 'The movie is removed' });
+    } else {
+      throw new ForbiddenError("You don't have the authorization to remove other users' movies");
+    }
   } catch (err) {
     next(err);
   }
