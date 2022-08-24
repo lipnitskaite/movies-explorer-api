@@ -12,6 +12,8 @@ const { moviesRoutes } = require('./moviesRoutes');
 
 const NotFoundError = require('../errors/NotFoundError');
 
+const { notFoundErrorMessage } = require('../helpers/constants');
+
 routes.post('/signup', createUserValidation, createUser);
 routes.post('/signin', signInUserValidation, signInUser);
 
@@ -22,10 +24,8 @@ routes.get('/signout', signOutUser);
 routes.use('/users', usersRoutes);
 routes.use('/movies', moviesRoutes);
 
-routes.all('*', (req, res, next) => {
-  throw new NotFoundError("Sorry, we can't find the page you're looking for.");
-
-  next(err);
+routes.all('*', () => {
+  throw new NotFoundError(notFoundErrorMessage);
 });
 
 exports.routes = routes;

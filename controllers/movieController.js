@@ -1,10 +1,14 @@
 const { Movie } = require('../models/movieModel');
 
-const DublicateError = require('../errors/DublicateError');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
+const BadRequestError = require('../errors/BadRequestError');
 
-const MONGO_DUPLICATE_ERROR_CODE = require('../helpers/constants');
+const {
+  notFoundErrorMessage,
+  forbiddenErrorMessage,
+  badRequestErrorMessage,
+} = require('../helpers/constants');
 
 exports.createMovie = async (req, res, next) => {
   try {
@@ -51,11 +55,11 @@ exports.createMovie = async (req, res, next) => {
       nameEN: newMovie.nameEN,
     });
   } catch (err) {
-    if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
-      err = new DublicateError('This movie has been already created');
+    if (err.name === 'ValidationError') {
+      next(new BadRequestError(badRequestErrorMessage));
+    } else {
+      next(err);
     }
-
-    next(err);
   }
 };
 
@@ -64,7 +68,7 @@ exports.doesMovieExist = async (req, res, next) => {
     const movie = await Movie.findById(req.params.id);
 
     if (!movie) {
-      throw new NotFoundError("Sorry, we can't find the movie you're looking for.");
+      throw new NotFoundError(notFoundErrorMessage);
     }
   } catch (err) {
     next(err);
@@ -75,7 +79,8 @@ exports.doesMovieExist = async (req, res, next) => {
 
 exports.getMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({});
+    const owner = req.user._id;
+    const movies = await Movie.find({ owner });
 
     res.send(movies);
   } catch (err) {
@@ -91,7 +96,7 @@ exports.deleteMovieByID = async (req, res, next) => {
 
       res.send({ message: 'The movie is removed' });
     } else {
-      throw new ForbiddenError("You don't have the authorization to remove other users' movies");
+      throw new ForbiddenError(forbiddenErrorMessage);
     }
   } catch (err) {
     next(err);

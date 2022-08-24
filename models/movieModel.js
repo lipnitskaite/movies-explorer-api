@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const regexURL = require('../helpers/constants');
 
-const urlValidation = (v) => regexURL.test(v);
+const urlValidation = (value) => regexURL.test(value);
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -31,6 +31,10 @@ const movieSchema = new mongoose.Schema({
       urlValidation,
       message: () => 'Invalid link',
     },
+    // validate: {
+    //   validator: (value) => urlValidation(value),
+    //   message: () => 'Invalid link',
+    // },
   },
   trailerLink: {
     type: String,
@@ -39,6 +43,10 @@ const movieSchema = new mongoose.Schema({
       urlValidation,
       message: () => 'Invalid link',
     },
+    // validate: {
+    //   validator: (value) => urlValidation(value),
+    //   message: () => 'Invalid link',
+    // },
   },
   thumbnail: {
     type: String,
@@ -47,6 +55,10 @@ const movieSchema = new mongoose.Schema({
       urlValidation,
       message: () => 'Invalid link',
     },
+    // validate: {
+    //   validator: (value) => urlValidation(value),
+    //   message: () => 'Invalid link',
+    // },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

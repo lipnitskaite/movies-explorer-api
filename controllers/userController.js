@@ -2,10 +2,19 @@ const bcrypt = require('bcrypt');
 
 const { User } = require('../models/userModel');
 
-const DublicateError = require('../errors/DublicateError');
+const DuplicateError = require('../errors/DuplicateError');
+const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 
-const { MONGO_DUPLICATE_ERROR_CODE } = require('../helpers/constants');
+const {
+  notFoundErrorMessage,
+  badRequestErrorMessage,
+  duplicateErrorMessage,
+} = require('../helpers/constants');
+
+const {
+  MONGO_DUPLICATE_ERROR_CODE,
+} = require('../helpers/constants');
 
 const SALT_ROUNDS = 10;
 
@@ -30,11 +39,13 @@ exports.createUser = async (req, res, next) => {
       name: newUser.name,
     });
   } catch (err) {
-    if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
-      err = new DublicateError('This email address is already being used');
+    if (err.name === 'ValidationError') {
+      next(new BadRequestError(badRequestErrorMessage));
+    } else if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
+      next(new DuplicateError(duplicateErrorMessage));
+    } else {
+      next(err);
     }
-
-    next(err);
   }
 };
 
@@ -65,7 +76,7 @@ exports.updateCurrentUser = async (req, res, next) => {
     );
 
     if (!updatedUser) {
-      throw new NotFoundError("Sorry, we can't find the user you're looking for.");
+      throw new NotFoundError(notFoundErrorMessage);
     }
 
     res.send({
@@ -73,6 +84,12 @@ exports.updateCurrentUser = async (req, res, next) => {
       name: updatedUser.name,
     });
   } catch (err) {
-    next(err);
+    if (err.name === 'ValidationError') {
+      next(new BadRequestError(badRequestErrorMessage));
+    } else if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
+      next(new DuplicateError(duplicateErrorMessage));
+    } else {
+      next(err);
+    }
   }
 };
