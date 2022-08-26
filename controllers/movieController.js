@@ -5,9 +5,9 @@ const ForbiddenError = require('../errors/ForbiddenError');
 const BadRequestError = require('../errors/BadRequestError');
 
 const {
-  notFoundErrorMessage,
-  forbiddenErrorMessage,
-  badRequestErrorMessage,
+  NOT_FOUND_ERROR_MESSAGE,
+  FORBIDDEN_ERROR_MESSAGE,
+  BAD_REQUEST_ERROR_MESSAGE,
 } = require('../helpers/constants');
 
 exports.createMovie = async (req, res, next) => {
@@ -56,7 +56,7 @@ exports.createMovie = async (req, res, next) => {
     });
   } catch (err) {
     if (err.name === 'ValidationError') {
-      next(new BadRequestError(badRequestErrorMessage));
+      next(new BadRequestError(BAD_REQUEST_ERROR_MESSAGE));
     } else {
       next(err);
     }
@@ -68,7 +68,7 @@ exports.doesMovieExist = async (req, res, next) => {
     const movie = await Movie.findById(req.params.id);
 
     if (!movie) {
-      throw new NotFoundError(notFoundErrorMessage);
+      throw new NotFoundError(NOT_FOUND_ERROR_MESSAGE);
     }
   } catch (err) {
     next(err);
@@ -96,7 +96,7 @@ exports.deleteMovieByID = async (req, res, next) => {
 
       res.send({ message: 'The movie is removed' });
     } else {
-      throw new ForbiddenError(forbiddenErrorMessage);
+      throw new ForbiddenError(FORBIDDEN_ERROR_MESSAGE);
     }
   } catch (err) {
     next(err);

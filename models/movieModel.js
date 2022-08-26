@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const regexURL = require('../helpers/constants');
+const validator = require('validator');
 
-const urlValidation = (value) => regexURL.test(value);
+const { INVALID_LINK_ERROR_MESSAGE } = require('../helpers/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -27,44 +27,33 @@ const movieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-    use: {
-      urlValidation,
-      message: () => 'Invalid link',
+    validate: {
+      validator: (v) => validator.isURL(v),
+      message: () => INVALID_LINK_ERROR_MESSAGE,
     },
-    // validate: {
-    //   validator: (value) => urlValidation(value),
-    //   message: () => 'Invalid link',
-    // },
   },
   trailerLink: {
     type: String,
     required: true,
-    use: {
-      urlValidation,
-      message: () => 'Invalid link',
+    validate: {
+      validator: (v) => validator.isURL(v),
+      message: () => INVALID_LINK_ERROR_MESSAGE,
     },
-    // validate: {
-    //   validator: (value) => urlValidation(value),
-    //   message: () => 'Invalid link',
-    // },
   },
   thumbnail: {
     type: String,
     required: true,
-    use: {
-      urlValidation,
-      message: () => 'Invalid link',
+    validate: {
+      validator: (v) => validator.isURL(v),
+      message: () => INVALID_LINK_ERROR_MESSAGE,
     },
-    // validate: {
-    //   validator: (value) => urlValidation(value),
-    //   message: () => 'Invalid link',
-    // },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'user',
   },
+  // ВРЕМЕННЫЙ КОММЕНТАРИЙ:
   // movieId — id фильма, который содержится в ответе сервиса MoviesExplorer. Обязательное поле.
   movieId: {
     type: Number,

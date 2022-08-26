@@ -7,9 +7,9 @@ const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 
 const {
-  notFoundErrorMessage,
-  badRequestErrorMessage,
-  duplicateErrorMessage,
+  NOT_FOUND_ERROR_MESSAGE,
+  BAD_REQUEST_ERROR_MESSAGE,
+  DUPLICATE_ERROR_MESSAGE,
 } = require('../helpers/constants');
 
 const {
@@ -40,9 +40,9 @@ exports.createUser = async (req, res, next) => {
     });
   } catch (err) {
     if (err.name === 'ValidationError') {
-      next(new BadRequestError(badRequestErrorMessage));
+      next(new BadRequestError(BAD_REQUEST_ERROR_MESSAGE));
     } else if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
-      next(new DuplicateError(duplicateErrorMessage));
+      next(new DuplicateError(DUPLICATE_ERROR_MESSAGE));
     } else {
       next(err);
     }
@@ -76,7 +76,7 @@ exports.updateCurrentUser = async (req, res, next) => {
     );
 
     if (!updatedUser) {
-      throw new NotFoundError(notFoundErrorMessage);
+      throw new NotFoundError(NOT_FOUND_ERROR_MESSAGE);
     }
 
     res.send({
@@ -85,9 +85,9 @@ exports.updateCurrentUser = async (req, res, next) => {
     });
   } catch (err) {
     if (err.name === 'ValidationError') {
-      next(new BadRequestError(badRequestErrorMessage));
+      next(new BadRequestError(BAD_REQUEST_ERROR_MESSAGE));
     } else if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
-      next(new DuplicateError(duplicateErrorMessage));
+      next(new DuplicateError(DUPLICATE_ERROR_MESSAGE));
     } else {
       next(err);
     }

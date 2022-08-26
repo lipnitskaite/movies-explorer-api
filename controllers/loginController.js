@@ -5,7 +5,7 @@ const { User } = require('../models/userModel');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 
 const { generateToken } = require('../helpers/jwt');
-const { unauthorizedCredentialsErrorMessage } = require('../helpers/constants');
+const { UNAUTHORIZED_CREDENTIALS_ERROR_MESSAGE } = require('../helpers/constants');
 
 exports.signInUser = async (req, res, next) => {
   try {
@@ -13,13 +13,13 @@ exports.signInUser = async (req, res, next) => {
     const foundUser = await User.findOne({ email }).select('+password');
 
     if (!foundUser) {
-      throw new UnauthorizedError(unauthorizedCredentialsErrorMessage);
+      throw new UnauthorizedError(UNAUTHORIZED_CREDENTIALS_ERROR_MESSAGE);
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, foundUser.password);
 
     if (!isPasswordCorrect) {
-      throw new UnauthorizedError(unauthorizedCredentialsErrorMessage);
+      throw new UnauthorizedError(UNAUTHORIZED_CREDENTIALS_ERROR_MESSAGE);
     }
 
     const token = generateToken({ _id: foundUser._id });

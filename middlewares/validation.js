@@ -1,6 +1,10 @@
 const { celebrate, Joi } = require('celebrate');
+const { isEmail, isURL } = require('validator');
 
-const { regexURL } = require('../helpers/constants');
+const {
+  INVALID_EMAIL_ERROR_MESSAGE,
+  INVALID_LINK_ERROR_MESSAGE,
+} = require('../helpers/constants');
 
 exports.createUserValidation = celebrate({
   body: Joi.object().keys({
@@ -24,6 +28,12 @@ exports.signInUserValidation = celebrate({
       .required()
       .email({
         minDomainSegments: 2,
+      })
+      .custom((value, error) => {
+        if (isEmail(value)) {
+          return value;
+        }
+        return error.message(INVALID_EMAIL_ERROR_MESSAGE);
       }),
     password: Joi.string()
       .required(),
@@ -36,6 +46,12 @@ exports.updateUserValidation = celebrate({
       .required()
       .email({
         minDomainSegments: 2,
+      })
+      .custom((value, error) => {
+        if (isEmail(value)) {
+          return value;
+        }
+        return error.message(INVALID_EMAIL_ERROR_MESSAGE);
       }),
     name: Joi.string()
       .required()
@@ -58,27 +74,27 @@ exports.createMovieValidation = celebrate({
       .required(),
     image: Joi.string()
       .required()
-      .custom((value, helpers) => {
-        if (!regexURL.test(value)) {
-          return helpers.message('Invalid link');
+      .custom((value, error) => {
+        if (isURL(value)) {
+          return value;
         }
-        return value;
+        return error.message(INVALID_LINK_ERROR_MESSAGE);
       }),
     trailerLink: Joi.string()
       .required()
-      .custom((value, helpers) => {
-        if (!regexURL.test(value)) {
-          return helpers.message('Invalid link');
+      .custom((value, error) => {
+        if (isURL(value)) {
+          return value;
         }
-        return value;
+        return error.message(INVALID_LINK_ERROR_MESSAGE);
       }),
     thumbnail: Joi.string()
       .required()
-      .custom((value, helpers) => {
-        if (!regexURL.test(value)) {
-          return helpers.message('Invalid link');
+      .custom((value, error) => {
+        if (isURL(value)) {
+          return value;
         }
-        return value;
+        return error.message(INVALID_LINK_ERROR_MESSAGE);
       }),
     movieId: Joi.number()
       .required(),
