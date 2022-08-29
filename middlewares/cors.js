@@ -23,6 +23,6 @@ exports.checkCors = async (req, res, next) => {
 
     return res.end();
   }
-
   next();
+  return null;
 };
