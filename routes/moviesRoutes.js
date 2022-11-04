@@ -11,7 +11,6 @@ const {
 
 const moviesRoutes = express.Router();
 
-// # возвращает все сохранённые текущим  пользователем фильмы
 moviesRoutes.get('/', getMovies);
 
 moviesRoutes.post('/', createMovieValidation, createMovie);
