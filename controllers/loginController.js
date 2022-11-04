@@ -44,6 +44,7 @@ exports.signOutUser = async (req, res, next) => {
       maxAge: 360000 * 24 * 7,
       httpOnly: true,
       sameSite: 'none',
+      secure: true,
     })
       .send({ message: 'The user has logged out' });
   } catch (err) {
