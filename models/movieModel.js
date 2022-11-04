@@ -53,8 +53,6 @@ const movieSchema = new mongoose.Schema({
     required: true,
     ref: 'user',
   },
-  // ВРЕМЕННЫЙ КОММЕНТАРИЙ:
-  // movieId — id фильма, который содержится в ответе сервиса MoviesExplorer. Обязательное поле.
   movieId: {
     type: Number,
     required: true,
