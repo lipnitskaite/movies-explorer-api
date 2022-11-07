@@ -1,6 +1,6 @@
 const allowedCors = [
-  'https://movies.lipnitskaite.nomoredomains.sbs/',
-  'http://movies.lipnitskaite.nomoredomains.sbs/',
+  'https://movies.lipnitskaite.nomoredomains.sbs',
+  'http://movies.lipnitskaite.nomoredomains.sbs',
   'http://localhost:3000',
 ];
 
