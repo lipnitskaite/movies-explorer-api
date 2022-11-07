@@ -53,6 +53,7 @@ exports.createMovie = async (req, res, next) => {
       movieId: newMovie.movieId,
       nameRU: newMovie.nameRU,
       nameEN: newMovie.nameEN,
+      _id: newMovie._id,
     });
   } catch (err) {
     if (err.name === 'ValidationError') {
@@ -94,7 +95,7 @@ exports.deleteMovieByID = async (req, res, next) => {
     if (req.user._id === movie.owner.toString()) {
       await Movie.findByIdAndDelete(req.params.id);
 
-      res.send({ message: 'The movie is removed' });
+      res.send(movie);
     } else {
       throw new ForbiddenError(FORBIDDEN_ERROR_MESSAGE);
     }
