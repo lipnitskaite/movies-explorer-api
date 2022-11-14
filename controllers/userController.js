@@ -6,6 +6,8 @@ const DuplicateError = require('../errors/DuplicateError');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 
+const { generateToken } = require('../helpers/jwt');
+
 const {
   NOT_FOUND_ERROR_MESSAGE,
   BAD_REQUEST_ERROR_MESSAGE,
@@ -34,10 +36,20 @@ exports.createUser = async (req, res, next) => {
       name,
     });
 
-    res.send({
-      email: newUser.email,
-      name: newUser.name,
-    });
+    const token = generateToken({ _id: newUser._id });
+
+    res
+      .cookie('jwt', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+      })
+      .send({
+        email: newUser.email,
+        name: newUser.name,
+      })
+      .end();
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new BadRequestError(BAD_REQUEST_ERROR_MESSAGE));

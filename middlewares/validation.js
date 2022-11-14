@@ -12,6 +12,12 @@ exports.createUserValidation = celebrate({
       .required()
       .email({
         minDomainSegments: 2,
+      })
+      .custom((value, error) => {
+        if (isEmail(value)) {
+          return value;
+        }
+        return error.message(INVALID_EMAIL_ERROR_MESSAGE);
       }),
     password: Joi.string()
       .required(),
